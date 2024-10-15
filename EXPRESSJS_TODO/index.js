@@ -10,6 +10,16 @@ const PORT = 3000;
 app.use(express.json());
 app.use('/api', apiRoutes);
 
+app.use((request,response) => {
+    response.status(404);
+    response.json({message:"Resource not found!"});
+})
+
+app.use((request,response) => {
+    response.status(500);
+    response.json({message:"Ooops... Something went wrong"});
+})
+
 app.get('/', (request, response) => {
     response.status(200).json({message:"Hello Andreh!"});
 })

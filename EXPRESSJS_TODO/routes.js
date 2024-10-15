@@ -39,12 +39,66 @@ router.get('/todo/:id', async(request, response) => {
 })
 
 
-router.put('/todo/:id', (request, response) => {
+router.patch('/todo/:id', async(request, response) => {
+
+    const task = await Task.findOne({
+        where: {
+            id:request.params.id
+        }
+    })
+
+    const { is_complete } = request.body;
+
+    await task.set(
+        {
+            is_complete: is_complete
+        }
+    )
+
+    await task.save();
+
+    response.status(200).json(task);
+    
 
 })
 
-router.delete('/todo/:id', (request, response) => {
+router.put('/todo/:id', async(request, response) => {
 
+    const task = await Task.findOne({
+        where: {
+            id:request.params.id
+        }
+    })
+
+    const { is_complete, content, description } = request.body;
+
+    await task.set(
+        {
+            is_complete: is_complete,
+            content: content,
+            description: description
+        }
+    )
+
+    await task.save();
+
+    response.status(200).json(task);
+    
+
+
+})
+
+router.delete('/todo/:id', async(request, response) => {
+
+    const task = await Task.findOne({
+        where: {
+            id:request.params.id
+        }
+    })
+
+    await task.destroy();
+
+    response.status(204).json({});
 })
 
 module.exports = router;
